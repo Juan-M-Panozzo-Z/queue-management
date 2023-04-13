@@ -20,7 +20,7 @@ Este sistema utliza como base las tecnologías Nodejs, ExpressJs, Mongodb, Socke
 - las urls de las apis se desplegarán en la consola al momento de iniciar el servidor
 
 ¿Que comando se usa para iniciarlizarlo?
-- El comando a utilizar es 'npm un start'
+- El comando a utilizar es 'npm run start'
 
 Datos extras:
 - Actualmente esta en un desarrollo temprano, ¡sos libre de aportar o de crear una rama con tus propias modificaciones!
