@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Ingresar a la fila</title>
+</head>
+
+<body class="bg-slate-50">
+    <div class="container mx-auto">
+        <form action="" class="flex justify-center items-center h-screen">
+            <div class="flex flex-col text-center gap-8 w-1/2">
+                <label class="text-4xl xl:text-6xl uppercase text-slate-700 animate-bounce" for="idup">
+                    👇 Ingrese su dni 👇
+                </label>
+                <input
+                    class="p-4 outline-none border-4 border-slate-500 rounded-2xl text-5xl italic text-slate-700 text-center focus:scale-105 focus:shadow-lg duration-200 "
+                    type="number" name="idup" id="idup">
+                <div>
+                    <button id="send"
+                        class="bg-green-500 py-4 px-10 text-xl uppercase rounded-2xl border-4 border-green-500 text-white font-bold hover:bg-white hover:text-green-600 focus:scale-95 focus:shadow-lg duration-200">
+                        Ingresar a a la fila
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
+<script>
+    const idup = document.getElementById('idup');
+    idup.addEventListener('keyup', () => {
+        if (idup.value.length != 8) {
+            const idup = document.getElementById('idup')
+            idup.classList.replace('border-slate-500', 'border-red-500')
+            idup.classList.replace('border-green-500', 'border-red-500')
+        } else {
+            const idup = document.getElementById('idup')
+            idup.classList.replace('border-red-500', 'border-green-500')
+        }
+    });
+
+    const lineUp = () => {
+        fetch(`http://localhost:3000/api/queues/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idup: idup.value
+            })
+        }).then(res => res.json())
+            .then(data => {
+                alert(data.message)
+                idup.value = ''
+            })
+    }
+
+    document.getElementById('send').addEventListener('click', (e) => {
+        e.preventDefault()
+        idup.value.length == 8
+            ? lineUp()
+            : idup.classList.add('animate-shake')
+    })
+
+    document.getElementById('idup').addEventListener('keyup', (e) => {
+        e.preventDefault()
+        if (e.key === 'Enter') {
+            idup.value.length == 8
+                ? lineUp()
+                : idup.classList.add('animate-shake')
+        }
+    })
+</script>
+
+</html>

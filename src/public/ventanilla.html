@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Ventanilla</title>
+</head>
+
+<body class="bg-slate-50">
+    <div class="container mx-auto flex flex-col justify-center mt-28 gap-8">
+        <h2 class="text-center text-5xl pb-2 block font-bold uppercase hover:text-green-500 duration-300">
+            Ventanilla de atencion
+        </h2>
+        <div class="grid lg:grid-cols-2 gap-8">
+            <div class="bg-white w-full shadow-lg mx-auto rounded-3xl p-8 flex flex-col justify-center gap-6">
+                <button id="next"
+                    class="bg-gradient-to-br from-green-400 to-cyan-400 text-white text-xl font-bold py-4 px-4 uppercase rounded-2xl ring-green-500 hover:from-white hover:text-green-500 hover:shadow-lg hover:ring-2 focus:scale-95 duration-500">
+                    Siguiente
+                </button>
+                <button id="recall"
+                    class="bg-gradient-to-br from-green-400 to-cyan-400 text-white text-xl font-bold py-4 px-4 uppercase rounded-2xl ring-amber-500 hover:from-white hover:text-amber-500 hover:shadow-lg hover:ring-2 focus:scale-95 duration-500">
+                    Volver a llamar
+                </button>
+                <hr class="mx-auto rounded-3xl border-2 w-2/3">
+                <div class="flex flex-col justify-center gap-6">
+                    <h3 class="text-center text-sm lg:text-xl text-slate-400 italic">
+                        👇 Enviar un mensaje a la pantalla 👇
+                    </h3>
+                    <textarea id="msg"
+                        class="px-4 py-2 text-xl text-slate-500 rounded-2xl bg-slate-100 border-2 focus:border-green-400 focus:outline-0 focus:shadow-xl duration-500"
+                        type="text" name="msg" id="msg" rows="8"></textarea>
+                    <button id="send"
+                        class="bg-gradient-to-br from-green-400 to-cyan-400 text-white text-xl font-bold py-4 px-4 uppercase rounded-2xl ring-slate-500 hover:from-white hover:text-slate-500 hover:shadow-lg hover:ring-2 focus:scale-95 duration-500">Enviar</button>
+                </div>
+            </div>
+            <div class="bg-slate-800 flex flex-col w-full shadow-lg mx-auto rounded-3xl p-8 gap-8">
+                <h3 class="text-5xl text-slate-50 uppercase text-center p-1">
+                    Ultima persona llamada
+                </h3>
+                <h2 id="lastCall" class="text-5xl lg:text-7xl text-red-700 text-center p-8">
+                </h2>
+                <hr class="w-2/3 rounded-3xl border-2 mx-auto">
+                <h3 class="text-5xl text-slate-50 uppercase text-center p-1">
+                    Ultimo mensaje enviado
+                </h3>
+                <h2 id="lastMsg"
+                    class="rounded-3xl italic font-light bg-slate-50 text-3xl text-slate-700 text-center p-8">
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        document.querySelectorAll('button')
+            .forEach(btn => btn.addEventListener('click', () => {
+                let msg = document.getElementById('msg').value;
+                msg == '' ? msg = 'Mensaje vacío' : msg;
+
+                if (btn.id === 'send') {
+                    socket.emit('ventanilla', msg)
+                    console.log(`Mensaje emitido: ${msg}`)
+                }
+                else {
+                    socket.emit('ventanilla', btn.id)
+                    console.log(`Evento emitido: ${btn.id}`)
+                }
+            }));
+
+        (() => {
+            fetch("http://localhost:3000/api/messages/last")
+                .then((res) => { return res.json() })
+                .then((data) => {
+                    const message = data[0].message;
+                    document.getElementById('lastMsg').innerHTML = message;
+                });
+        })();
+
+        (() => {
+            fetch('http://localhost:3000/api/queues/last')
+                .then((res) => { return res.json() })
+                .then((data) => {
+                    const lastCall = data[0].idup
+                    document.getElementById('lastCall').innerHTML = lastCall
+                });
+        }
+        )();
+
+        const sendMsg = () => {
+            let message = document.getElementById('msg').value
+            fetch("http://localhost:3000/api/messages", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            })
+                .then((res) => { return res.json() })
+                .then((data) => {
+                    alert(data.message)
+                    document.getElementById('msg').value = ''
+                    document.getElementById('send').disabled = true
+                    setTimeout(() => {
+                        document.getElementById('send').disabled = false
+                    }, 5000)
+                    document.getElementById('lastMsg').innerHTML = message
+                })
+        }
+
+        document.getElementById('send').addEventListener('click', () => { sendMsg() })
+        document.getElementById('msg').addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                sendMsg()
+            }
+        })
+    </script>
+</body>
+
+</html>
+
+
+<style>
+    textarea {
+        resize: none;
+    }
+</style>
