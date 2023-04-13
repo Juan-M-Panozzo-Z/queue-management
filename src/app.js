@@ -9,7 +9,6 @@ import { Server } from "socket.io";
 // Load .env
 dotenv.config();
 
-// Constants
 const { DATABASE_URL } = process.env;
 
 // routes
