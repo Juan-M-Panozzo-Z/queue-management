@@ -1,9 +1,16 @@
+import dotenv from "dotenv";
 import express from "express";
 import bodyParser from "body-parser";
 import http from "http";
 import path from "path";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
+
+// Load .env
+dotenv.config();
+
+// Constants
+const { DATABASE_URL } = process.env;
 
 // routes
 import usersRoutes from "./routes/users.js";
@@ -15,10 +22,10 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Mongoose config
+// Mongoose config using .env
 mongoose
   .connect(
-    "mongodb+srv://jmpz:residentEvil4Remake@cluster0.pab21ft.mongodb.net/turnero_test"
+    DATABASE_URL || "mongodb://localhost:27017/queue-management-system",
   )
   .then(() => console.log("Conectado a MongoDB"))
   .catch((err) => console.log(err));
