@@ -6,9 +6,7 @@ import path from "path";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
 
-// Load .env
 dotenv.config();
-
 const { DATABASE_URL } = process.env;
 
 // routes
