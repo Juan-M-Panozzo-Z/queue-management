@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import cors from "cors";
 import express from "express";
 import bodyParser from "body-parser";
 import http from "http";
@@ -15,19 +16,22 @@ import queueRoutes from "./routes/queues.js";
 import messageRoutes from "./routes/messages.js";
 import { ventanilla, tv, lineup, err404 } from "./routes/views.js";
 
+// models for socket.io middleware
+import Queue from "./models/Queue.js";
+
+// Express config
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
 // Mongoose config using .env
 mongoose
-  .connect(
-    DATABASE_URL || "mongodb://localhost:27017/queue-management-system",
-  )
+  .connect(DATABASE_URL || "mongodb://localhost:27017/queue-management-system")
   .then(() => console.log("Conectado a MongoDB"))
   .catch((err) => console.log(err));
 
 // Middlewares config
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -36,20 +40,43 @@ io.on("connection", (socket) => {
   socket.on("ventanilla", (msg) => {
     switch (msg) {
       case "next":
-        io.emit("tv", msg);
-        break;
-      case "previous":
+        (async () => {
+          try {
+            const queue = await Queue.find({ isWaiting: true })
+              .sort({ createdAt: 1 })
+              .limit(1)
+              .select("idup");
+            const { _id, idup } = queue[0];
+            io.emit("tv", idup);
+            console.log(`Se llamo el turno con el idup: ${queue[0].idup}`);
+            await Queue.findByIdAndUpdate(_id, {
+              isWaiting: false,
+            });
+          } catch {
+            console.log("No hay turnos en fila");
+          }
+        })();
         break;
       case "recall":
+        (async () => {
+          try {
+            const queue = await Queue.find({ isWaiting: false })
+              .sort({ createdAt: -1 })
+              .limit(1)
+              .select("idup");
+            const { idup } = queue[0];
+            io.emit("tv", idup);
+            console.log(`Se volvió a llamar al turno: ${idup}`);
+          } catch {
+            console.log("No hay ningun turno anterior");
+          }
+        })();
         break;
       case "msg":
         break;
       default:
         break;
     }
-
-    io.emit("ventanilla", msg);
-    console.log(`Evento escuchado: ${msg}`);
   });
 });
 

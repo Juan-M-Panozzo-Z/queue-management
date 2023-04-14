@@ -18,7 +18,7 @@
                     <thead class="text-slate-50 text-center text-4xl bold">
                         <tr class="text-center">
                             <th>
-                                Nº Ticket
+                                DNI
                             </th>
                             <th>
                                 Ventanilla
@@ -62,13 +62,13 @@
         const socket = io();
         const messages = document.getElementById('tbody');
 
-        socket.on('tv', function (msg) {
+        socket.on('tv', (id) => {
             const item = document.createElement('tr');
             const childItem = document.createElement('td');
             const childItem2 = document.createElement('td');
-            childItem.classList.add('ticket', 'text-center', 'text-9xl');
+            childItem.classList.add('dni', 'text-center', 'text-9xl');
             childItem2.classList.add('ventanilla', 'text-center', 'text-9xl');
-            childItem.innerHTML = msg;
+            childItem.innerHTML = id;
             childItem2.innerHTML = `1`;
             item.appendChild(childItem);
             item.appendChild(childItem2)

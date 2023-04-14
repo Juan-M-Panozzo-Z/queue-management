@@ -13,12 +13,16 @@
 <body class="bg-slate-50">
     <div class="container mx-auto">
         <form action="" class="flex justify-center items-center h-screen">
-            <div class="flex flex-col text-center gap-8 w-1/2">
+            <div class="flex flex-col text-center xl:gap-20 gap-10 w-full px-4">
+                <span class="italic p-4 rounded-xl bg-slate-100 shadow-xl shadow-slate-200 xl:text-xl">
+                    ¿Necesitas ingresar a la fila de espera?, ingresa tu dni y presiona
+                    <br><strong class="text-green-500 leading-loose uppercase">Ingresar a la fila</strong>
+                </span>
                 <label class="text-4xl xl:text-6xl uppercase text-slate-700 animate-bounce" for="idup">
                     👇 Ingrese su dni 👇
                 </label>
                 <input
-                    class="p-4 outline-none border-4 border-slate-500 rounded-2xl text-5xl italic text-slate-700 text-center focus:scale-105 focus:shadow-lg duration-200 "
+                    class="p-4 outline-none border-4 border-slate-500 rounded-2xl text-5xl tracking-widest italic text-slate-700 text-center focus:scale-105 focus:shadow-lg duration-200 "
                     type="number" name="idup" id="idup">
                 <div>
                     <button id="send"
@@ -42,13 +46,13 @@
 <script>
     const idup = document.getElementById('idup');
     idup.addEventListener('keyup', () => {
-        if (idup.value.length != 8) {
+        if (idup.value.length == 8) {
+            const idup = document.getElementById('idup')
+            idup.classList.replace('border-red-500', 'border-green-500')
+        } else {
             const idup = document.getElementById('idup')
             idup.classList.replace('border-slate-500', 'border-red-500')
             idup.classList.replace('border-green-500', 'border-red-500')
-        } else {
-            const idup = document.getElementById('idup')
-            idup.classList.replace('border-red-500', 'border-green-500')
         }
     });
 
@@ -73,6 +77,9 @@
         idup.value.length == 8
             ? lineUp()
             : idup.classList.add('animate-shake')
+        setTimeout(() => {
+            idup.classList.remove('animate-shake')
+        }, 2000);
     })
 
     document.getElementById('idup').addEventListener('keyup', (e) => {
@@ -81,6 +88,9 @@
             idup.value.length == 8
                 ? lineUp()
                 : idup.classList.add('animate-shake')
+            setTimeout(() => {
+                idup.classList.remove('animate-shake')
+            }, 2000);
         }
     })
 </script>
