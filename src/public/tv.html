@@ -9,13 +9,13 @@
 
 <body class="bg-slate-900">
     <div class="mx-auto">
-        <div class="grid lg:grid-cols-2 gap-4 p-4">
+        <div class="grid lg:grid-cols-2 xl:gap-4 xl:p-4">
             <div class="">
-                <video src="video/lorem2.mp4" class="invisible lg:visible rounded-3xl" autoplay muted loop />
+                <video src="video/lorem2.mp4" class="hidden lg:flex rounded-3xl" autoplay muted loop />
             </div>
             <div>
-                <table id="table" class="table-auto w-full bg-slate-700 rounded-3xl">
-                    <thead class="text-slate-50 text-center text-4xl bold">
+                <table id="table" class="table-auto w-full bg-slate-700 xl:rounded-3xl">
+                    <thead class="text-slate-50 text-center text-xl xl:text-4xl bold">
                         <tr class="text-center">
                             <th>
                                 DNI
@@ -31,7 +31,7 @@
         </div>
     </div>
     <marquee direction="left" loop="infinite"
-        class="bg-slate-400 absolute bottom-0 text-8xl text-slate-50 py-4 uppercase rounded-3xl"></marquee>
+        class="bg-slate-400 absolute bottom-0 text-4xl xl:text-8xl text-slate-50 py-4 uppercase xl:rounded-3xl"></marquee>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -75,8 +75,8 @@
             const item = document.createElement('tr');
             const childItem = document.createElement('td');
             const childItem2 = document.createElement('td');
-            childItem.classList.add('dni', 'text-center', 'text-9xl');
-            childItem2.classList.add('ventanilla', 'text-center', 'text-9xl');
+            childItem.classList.add('dni', 'text-center', 'text-4xl', 'xl:text-9xl');
+            childItem2.classList.add('ventanilla', 'text-center', 'text-4xl', 'xl:text-9xl');
             childItem.innerHTML = id;
             childItem2.innerHTML = `1`;
             item.appendChild(childItem);
