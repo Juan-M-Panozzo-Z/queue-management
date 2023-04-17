@@ -47,12 +47,14 @@ io.on("connection", (socket) => {
               .limit(1)
               .select("idup");
             const { _id, idup } = queue[0];
+            console.log(`Se llamo el turno con el idup: ${idup}`);
             io.emit("tv", idup);
-            console.log(`Se llamo el turno con el idup: ${queue[0].idup}`);
+            io.emit("ventanilla", idup);
             await Queue.findByIdAndUpdate(_id, {
               isWaiting: false,
             });
-          } catch {
+          } catch (err){
+            io.emit("ventanilla", "No hay turnos en fila");
             console.log("No hay turnos en fila");
           }
         })();
@@ -66,17 +68,20 @@ io.on("connection", (socket) => {
               .select("idup");
             const { idup } = queue[0];
             io.emit("tv", idup);
+            io.emit("ventanilla", idup);
             console.log(`Se volvió a llamar al turno: ${idup}`);
           } catch {
             console.log("No hay ningun turno anterior");
           }
         })();
         break;
-      case "msg":
-        break;
       default:
         break;
     }
+  });
+
+  socket.on("msg", (msg) => {
+    io.emit("msg", msg);
   });
 });
 

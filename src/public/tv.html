@@ -31,10 +31,20 @@
         </div>
     </div>
     <marquee direction="left" loop="infinite"
-        class="bg-slate-400 absolute bottom-0 text-8xl text-slate-50 py-4 uppercase rounded-3xl"> hola mundo</marquee>
+        class="bg-slate-400 absolute bottom-0 text-8xl text-slate-50 py-4 uppercase rounded-3xl"></marquee>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        (() => {
+            fetch('http://localhost:3000/api/messages/last')
+                .then(res => res.json())
+                .then((data) => {
+                    const msg = data[0].message
+                    const marquee = document.querySelector('marquee');
+                    marquee.innerHTML = msg;
+                })
+        })();
+
         const eraseRows = () => {
             console.log('dentro de la funcion')
             const table = document.getElementById('table');
@@ -42,7 +52,6 @@
             if (cantRows >= 5) {
                 table.deleteRow(6);
             }
-
         }
 
         const firstLineRed = () => {
@@ -78,6 +87,11 @@
             eraseRows();
             window.scrollTo(0, document.body.scrollHeight);
         });
+
+        socket.on('msg', (msg) => {
+            const marquee = document.querySelector('marquee');
+            marquee.innerHTML = msg;
+        })
 
     </script>
 </body>

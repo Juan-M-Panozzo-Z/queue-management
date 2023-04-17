@@ -54,20 +54,9 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-
-        document.querySelectorAll('button')
-            .forEach(btn => btn.addEventListener('click', () => {
-                let msg = document.getElementById('msg').value;
-                msg == '' ? msg = 'Mensaje vacío' : msg;
-
-                if (btn.id === 'send') {
-                    socket.emit('ventanilla', msg)
-                    console.log(`Mensaje emitido: ${msg}`)
-                }
-                else {
-                    socket.emit('ventanilla', btn.id)
-                }
-            }));
+        socket.on('ventanilla', (data) => {
+            document.getElementById('lastCall').innerHTML = data
+        });
 
         (() => {
             fetch("http://localhost:3000/api/messages/last")
@@ -88,6 +77,23 @@
         }
         )();
 
+        // ####################################################################
+
+        document.querySelectorAll('button')
+            .forEach(btn => btn.addEventListener('click', () => {
+                let msg = document.getElementById('msg').value;
+                msg == '' ? msg = 'Mensaje vacío' : msg;
+                if (btn.id === 'send') {
+                    sendMsg()
+                    socket.emit('ventanilla', msg)
+                    socket.emit('msg', msg)
+                }
+                else {
+                    socket.emit('ventanilla', btn.id)
+                }
+            }))
+
+
         const sendMsg = () => {
             let message = document.getElementById('msg').value
             fetch("http://localhost:3000/api/messages", {
@@ -99,7 +105,6 @@
             })
                 .then((res) => { return res.json() })
                 .then((data) => {
-                    alert(data.message)
                     document.getElementById('msg').value = ''
                     document.getElementById('send').disabled = true
                     setTimeout(() => {
@@ -108,13 +113,6 @@
                     document.getElementById('lastMsg').innerHTML = message
                 })
         }
-
-        document.getElementById('send').addEventListener('click', () => { sendMsg() })
-        document.getElementById('msg').addEventListener('keyup', (e) => {
-            if (e.key === 'Enter') {
-                sendMsg()
-            }
-        })
     </script>
 </body>
 
