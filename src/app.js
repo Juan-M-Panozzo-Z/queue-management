@@ -6,6 +6,7 @@ import http from "http";
 import path from "path";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
+import axios from "axios";
 
 dotenv.config();
 const { DATABASE_URL } = process.env;
@@ -53,7 +54,7 @@ io.on("connection", (socket) => {
             await Queue.findByIdAndUpdate(_id, {
               isWaiting: false,
             });
-          } catch (err){
+          } catch (err) {
             io.emit("ventanilla", "No hay turnos en fila");
             console.log("No hay turnos en fila");
           }
@@ -78,6 +79,11 @@ io.on("connection", (socket) => {
       default:
         break;
     }
+  });
+
+  socket.on("queue", () => {
+    console.log("Se actualizó la fila");
+    io.emit("queue");
   });
 
   socket.on("msg", (msg) => {

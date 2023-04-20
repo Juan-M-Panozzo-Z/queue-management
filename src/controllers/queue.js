@@ -58,6 +58,18 @@ export const isWaiting = async (req, res) => {
   }
 };
 
+export const countIsWaiting = async (req, res) => {
+  try {
+    const count = await Queue.countDocuments({ isWaiting: true });
+    res.json(count);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: "No hay turnos en fila",
+    });
+  }
+};
+
 export const getQueueById = async (req, res) => {
   try {
     const queue = await Queue.findById(req.params.queueId);
