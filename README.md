@@ -1,5 +1,10 @@
 # queue-management
 
+## Actualizacion
+Se incorporó Swagger para la documentación de la API
+
+Se incorporó un modal que permite a la ventanilla ver cuando un nuevo cliente ingresa a la fila y la cantidad que hay en lista de espera.
+
 ## Descripción
 
 Este sistema utliza como base las tecnologías Nodejs, ExpressJs, Mongodb, Socket.io, TailwindCss
