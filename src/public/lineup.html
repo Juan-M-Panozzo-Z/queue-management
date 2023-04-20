@@ -74,7 +74,18 @@
             })
         }).then(res => res.json())
             .then(data => {
-                alert(data.message)
+                const div = document.createElement('div')
+                div.classList.add('bg-slate-50', 'p-4', 'rounded-xl', 'text-slate-700', 'text-center', 'fixed', 'inset-0', 'z-50', 'flex', 'justify-center', 'items-center')
+                div.innerHTML = `
+                    <div class="flex flex-col gap-4">
+                        <h1 class="text-7xl">✅</h1>
+                        <h1 class="text-3xl font-bold">${data.message}</h1>
+                    </div>
+                `
+                document.body.appendChild(div)
+                setTimeout(() => {
+                    div.remove()
+                }, 3000);
                 idup.value = ''
             })
     }
