@@ -69,14 +69,14 @@
                 })
                 .then((res) => { return res.json() })
                 .then((data) => {
-                    document.getElementById('totalQueues').innerHTML = data
+                    document.getElementById('totalQueues').innerHTML = data +1
+                    
                 });
-
             const modal = document.createElement('div');
             modal.classList.add('text-lg', 'fixed', 'bottom-6', 'right-6', 'bg-slate-200', 'max-w-xs', 'rounded-lg', 'p-6', 'shadow-xl');
             modal.innerHTML = `
                 <span>Ha ingresado un nuevo cliente</span>
-                <span>🎉 en total hay <strong class="text-green-700" id="totalQueues">${data}</strong> clientes en espera 🎉</span>
+                <span>🎉 en total hay <strong class="text-green-700" id="totalQueues"></strong> clientes en espera 🎉</span>
             `;
             document.getElementById('SocketFromLineUp').appendChild(modal);
             setTimeout(() => {
