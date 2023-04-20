@@ -88,8 +88,8 @@ export const createQueue = async (req, res, next) => {
     const newQueue = new Queue({ idup });
     const count = await Queue.countDocuments({ isWaiting: true });
     const queueSaved = await newQueue.save();
-    res.status(201).json({
-      message: `¡Estas en la fila!, delante tuyo hay: ${count} personas`,
+    res.status(200).json({
+      message: count
     });
   } catch (err) {
     console.log(err);
