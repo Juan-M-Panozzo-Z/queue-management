@@ -31,6 +31,75 @@ const router = express.Router();
  *                     type: object
  */
 
+/**
+ * @openapi
+ * /api/messages/last:
+ *   get:
+ *     tags:
+ *       - Messages
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array 
+ *                   items: 
+ *                     type: object
+ */
+
+/**
+ * @openapi
+ * /api/messages/date:
+ *   get:
+ *     tags:
+ *       - Messages
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array 
+ *                   items: 
+ *                     type: object
+ */
+
+/**
+ * @openapi
+ * /api/messages:
+ *   post:
+ *     tags:
+ *       - Messages
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array 
+ *                   items: 
+ *                     type: object
+ */
+
 router.get("/", getMessages);
 router.get("/last", lastMessage);
 router.get("/date", findMessagesByDate);

@@ -30,10 +30,199 @@ const router = express.Router();
  *                   type: string
  *                   example: OK
  *                 data:
- *                   type: array 
- *                   items: 
+ *                   type: array
+ *                   items:
  *                     type: object
  */
+
+/**
+ * @openapi
+ * /api/queues/last:
+ *   get:
+ *     tags:
+ *       - Queues
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ */
+
+/**
+ * @openapi
+ * /api/queues:
+ *   post:
+ *     tags:
+ *       - Queues
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ */
+
+/**
+ * @openapi
+ * /api/queues/next:
+ *   get:
+ *     tags:
+ *       - Queues
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ */
+
+/**
+ * @openapi
+ * /api/queues/isWaiting:
+ *   get:
+ *     tags:
+ *       - Queues
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ */
+
+/**
+ * @openapi
+ * /api/queues/countIsWaiting:
+ *   get:
+ *     tags:
+ *       - Queues
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ */
+
+/**
+ * @openapi
+ * /api/queues/{queueId}:
+ *   get:
+ *     tags:
+ *       - Queues
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ */
+
+/**
+ * @openapi
+ * /api/queues:
+ *   post:
+ *     tags:
+ *       - Queues
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               parameters:
+ *                - in: body
+ *                 name: queue
+ *                description: The queue to create.
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ */
+
+/**
+ * @openapi
+ * /api/queues/{queueId}:
+ *   put:
+ *     tags:
+ *       - Queues
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ */
+
 
 router.get("/", getQueues);
 router.get("/last", lastQueue);
@@ -45,3 +234,5 @@ router.post("/", createQueue);
 router.put("/:queueId", updateQueueById);
 
 export default router;
+
+
