@@ -6,7 +6,32 @@ import http from "http";
 import path from "path";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
-import axios from "axios";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: { title: "Queue Management System", version: "1.0.0" },
+  },
+  apis: [
+    "./src/routes/messages.js",
+    "./src/routes/queues.js",
+    "./src/routes/users.js",
+    "./src/routes/views.js",
+  ],
+};
+
+// docs en json
+const swaggerSpec = swaggerJSDoc(options);
+
+const swaggerDocs = (app, port) => {
+  app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.get("/swagger.json", (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.send(swaggerSpec);
+  });
+};
 
 dotenv.config();
 const { DATABASE_URL } = process.env;
@@ -95,12 +120,18 @@ io.on("connection", (socket) => {
 app.use("/css", express.static(path.join(__dirname, "public/css")));
 app.use("/video", express.static(path.join(__dirname, "public/video")));
 
+// Swagger
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // API
 app.use("/api/users", usersRoutes);
 app.use("/api/queues", queueRoutes);
 app.use("/api/messages", messageRoutes);
 
 // Views
+app.get("/", (req, res) => {
+  res.redirect("/docs");
+});
 app.use("/", ventanilla);
 app.use("/", tv);
 app.use("/", lineup);
@@ -118,6 +149,9 @@ server.listen(PORT, () => {
   
   http://localhost:${PORT}
   
+  > Swagger:
+  http://localhost:${PORT}/docs
+
   >  APIs:
   http://localhost:${PORT}/api/users
   http://localhost:${PORT}/api/queues
@@ -127,7 +161,8 @@ server.listen(PORT, () => {
   >  Views:
   http://localhost:${PORT}/ventanilla
   http://localhost:${PORT}/tv
-  
+  http://localhost:${PORT}/lineup
+
   Para salir presione CTRL + C
   -------------------------------------------
   `);
