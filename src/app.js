@@ -1,7 +1,9 @@
+import crypto from "crypto";
 import dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
 import bodyParser from "body-parser";
+import session from "express-session";
 import http from "http";
 import path from "path";
 import mongoose from "mongoose";
@@ -17,7 +19,7 @@ const options = {
   apis: [
     "./src/routes/messages.js",
     "./src/routes/queues.js",
-    "./src/routes/users.js",
+    "./src/routes/login.js",
     "./src/routes/views.js",
   ],
 };
@@ -37,9 +39,10 @@ dotenv.config();
 const { DATABASE_URL } = process.env;
 
 // routes
-import usersRoutes from "./routes/users.js";
+// import usersRoutes from "./routes/users.js";
 import queueRoutes from "./routes/queues.js";
 import messageRoutes from "./routes/messages.js";
+import loginRoutes from "./routes/login.js";
 import { ventanilla, tv, lineup, err404 } from "./routes/views.js";
 
 // models for socket.io middleware
@@ -60,6 +63,15 @@ mongoose
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// Session config
+app.use(
+  session({
+    secret: crypto.randomBytes(64).toString("hex"),
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // Socket.io config
 io.on("connection", (socket) => {
@@ -124,14 +136,11 @@ app.use("/video", express.static(path.join(__dirname, "public/video")));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API
-app.use("/api/users", usersRoutes);
+app.use("/", loginRoutes)
 app.use("/api/queues", queueRoutes);
 app.use("/api/messages", messageRoutes);
 
 // Views
-app.get("/", (req, res) => {
-  res.redirect("/docs");
-});
 app.use("/", ventanilla);
 app.use("/", tv);
 app.use("/", lineup);
@@ -153,10 +162,10 @@ server.listen(PORT, () => {
   http://localhost:${PORT}/docs
 
   >  APIs:
-  http://localhost:${PORT}/api/users
   http://localhost:${PORT}/api/queues
   http://localhost:${PORT}/api/messages
   http://localhost:${PORT}/api/lineup
+  http://localhost:${PORT}/api/login
 
   >  Views:
   http://localhost:${PORT}/ventanilla
