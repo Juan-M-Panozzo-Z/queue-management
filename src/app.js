@@ -43,7 +43,7 @@ const { DATABASE_URL } = process.env;
 import queueRoutes from "./routes/queues.js";
 import messageRoutes from "./routes/messages.js";
 import loginRoutes from "./routes/login.js";
-import { ventanilla, tv, lineup, err404 } from "./routes/views.js";
+import viewsRoutes from "./routes/views.js";
 
 // models for socket.io middleware
 import Queue from "./models/Queue.js";
@@ -141,10 +141,7 @@ app.use("/api/queues", queueRoutes);
 app.use("/api/messages", messageRoutes);
 
 // Views
-app.use("/", ventanilla);
-app.use("/", tv);
-app.use("/", lineup);
-app.use("*", err404);
+app.use("/", viewsRoutes);
 
 // Server
 const PORT = process.env.PORT || 3000;
@@ -165,7 +162,6 @@ server.listen(PORT, () => {
   http://localhost:${PORT}/api/queues
   http://localhost:${PORT}/api/messages
   http://localhost:${PORT}/api/lineup
-  http://localhost:${PORT}/api/login
 
   >  Views:
   http://localhost:${PORT}/ventanilla
