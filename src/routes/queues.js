@@ -190,7 +190,7 @@ const router = express.Router();
  *                - in: body
  *                 name: queue
  *                description: The queue to create.
- *               properties:
+ *                properties:
  *                 status:
  *                   type: string
  *                   example: OK
