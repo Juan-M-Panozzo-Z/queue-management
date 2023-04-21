@@ -4,24 +4,21 @@ import Users from "../models/Users";
 export const register = async (req, res) => {
   console.log(`register: ${req.body.username} ${req.body.password}`);
   const { username, password } = req.body;
-  bcrypt.hash(password, 10, (err, hash) => {
-    if (err) {
-      res.status(500).json({ message: err });
-    } else {
-      const user = new Users({
-        username,
-        password: hash,
-      });
-      user
-        .save()
-        .then((result) => {
-          res.status(201).json({ message: "Usuario creado" });
-        })
-        .catch((err) => {
-          res.status(500).json({ message: err });
-        });
-    }
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  const user = new Users({
+    username,
+    password: hashedPassword,
   });
+  user
+    .save()
+    .then((user) => {
+      req.session.user = user;
+      res.redirect("/ventanilla");
+    })
+    .catch((err) => {
+      res.status(500).json({ message: err });
+    });
 };
 
 export const login = async (req, res) => {
