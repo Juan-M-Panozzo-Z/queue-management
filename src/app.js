@@ -164,6 +164,8 @@ server.listen(PORT, () => {
   http://localhost:${PORT}/api/lineup
 
   >  Views:
+  http://localhost:${PORT}/login
+  http://localhost:${PORT}/register
   http://localhost:${PORT}/ventanilla
   http://localhost:${PORT}/tv
   http://localhost:${PORT}/lineup
