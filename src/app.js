@@ -75,8 +75,8 @@ app.use(
 
 // Socket.io config
 io.on("connection", (socket) => {
-  socket.on("ventanilla", (msg) => {
-    switch (msg) {
+  socket.on("ventanilla", (emit) => {
+    switch (emit[0]) {
       case "next":
         (async () => {
           try {
@@ -86,14 +86,14 @@ io.on("connection", (socket) => {
               .select("idup");
             const { _id, idup } = queue[0];
             console.log(`Se llamo el turno con el idup: ${idup}`);
-            io.emit("tv", idup);
+            io.emit("tv", [idup, emit[1]]);
             io.emit("ventanilla", idup);
+            console.log(idup, emit[1])
             await Queue.findByIdAndUpdate(_id, {
               isWaiting: false,
             });
           } catch (err) {
             io.emit("ventanilla", "No hay turnos en fila");
-            console.log("No hay turnos en fila");
           }
         })();
         break;
@@ -105,9 +105,8 @@ io.on("connection", (socket) => {
               .limit(1)
               .select("idup");
             const { idup } = queue[0];
-            io.emit("tv", idup);
+            io.emit("tv", [idup, emit[1]]);
             io.emit("ventanilla", idup);
-            console.log(`Se volvió a llamar al turno: ${idup}`);
           } catch {
             console.log("No hay ningun turno anterior");
           }

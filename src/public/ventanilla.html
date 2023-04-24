@@ -8,10 +8,16 @@
 </head>
 
 <body class="bg-slate-50">
-    <div class="container mx-auto flex flex-col justify-center mt-14 gap-8">
-        <h2 class="text-center text-5xl pb-2 block font-bold uppercase hover:text-green-500 duration-300">
-            Ventanilla de atencion
-        </h2>
+    <div class="container mx-auto flex flex-col justify-center mt-8 gap-8">
+        <div class="text-center text-5xl pb-2 font-bold uppercase flex gap-4 items-center justify-center">
+            <h2 class="hover:text-green-500 duration-300">
+                Ventanilla de atencion
+            </h2>
+            <select class="rounded-md p-4" name="ventanilla" id="ventanilla">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </div>
         <div class="grid lg:grid-cols-2 gap-8">
             <div class="bg-white w-full shadow-lg mx-auto rounded-3xl p-8 flex flex-col justify-center gap-6">
                 <button id="next"
@@ -113,6 +119,7 @@
         document.querySelectorAll('button')
             .forEach(btn => btn.addEventListener('click', () => {
                 let msg = document.getElementById('msg').value;
+                const ventanilla = document.getElementById('ventanilla').value;
                 msg == '' ? msg = 'Mensaje vacío' : msg;
                 if (btn.id === 'send') {
                     sendMsg()
@@ -120,7 +127,7 @@
                     socket.emit('msg', msg)
                 }
                 else {
-                    socket.emit('ventanilla', btn.id)
+                    socket.emit('ventanilla', [btn.id, ventanilla])
                 }
             }))
 

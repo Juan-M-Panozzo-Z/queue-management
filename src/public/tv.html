@@ -71,14 +71,14 @@
         const socket = io();
         const messages = document.getElementById('tbody');
 
-        socket.on('tv', (id) => {
+        socket.on('tv', (res) => {
             const item = document.createElement('tr');
             const childItem = document.createElement('td');
             const childItem2 = document.createElement('td');
             childItem.classList.add('dni', 'text-center', 'text-4xl', 'xl:text-9xl');
             childItem2.classList.add('ventanilla', 'text-center', 'text-4xl', 'xl:text-9xl');
-            childItem.innerHTML = id;
-            childItem2.innerHTML = `1`;
+            childItem.innerHTML = res[0];
+            childItem2.innerHTML = res[1];
             item.appendChild(childItem);
             item.appendChild(childItem2)
 
