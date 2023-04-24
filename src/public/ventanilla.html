@@ -69,7 +69,7 @@
         });
 
         socket.on('queue', (data) => {
-            fetch('http://localhost:3000/api/queues/countIsWaiting',
+            fetch('http://192.168.5.53:3000/api/queues/countIsWaiting',
                 {
                     method: 'GET',
                     headers: {
@@ -96,7 +96,7 @@
     <script>
 
             (() => {
-                fetch("http://localhost:3000/api/messages/last")
+                fetch("http://192.168.5.53:3000/api/messages/last")
                     .then((res) => { return res.json() })
                     .then((data) => {
                         const message = data[0].message;
@@ -105,7 +105,7 @@
             })();
 
         (() => {
-            fetch('http://localhost:3000/api/queues/last')
+            fetch('http://192.168.5.53:3000/api/queues/last')
                 .then((res) => { return res.json() })
                 .then((data) => {
                     const lastCall = data[0].idup
@@ -134,7 +134,7 @@
 
         const sendMsg = () => {
             let message = document.getElementById('msg').value
-            fetch("http://localhost:3000/api/messages", {
+            fetch("http://192.168.5.53:3000/api/messages", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -155,7 +155,7 @@
 
         // logout button send a get request to the server
         document.getElementById('logout').addEventListener('click', () => {
-            fetch('http://localhost:3000/logout', {
+            fetch('http://192.168.5.53:3000/logout', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
