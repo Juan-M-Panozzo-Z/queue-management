@@ -1,173 +1,229 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" href="css/style.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>Ventanilla</title>
+    </head>
 
-<head>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Ventanilla</title>
-</head>
-
-<body class="bg-slate-50">
-    <div class="container mx-auto flex flex-col justify-center mt-8 gap-8">
-        <div class="text-center text-5xl pb-2 font-bold uppercase flex gap-4 items-center justify-center">
-            <h2 class="hover:text-green-500 duration-300">
-                Ventanilla de atencion
-            </h2>
-            <select class="rounded-md p-4" name="ventanilla" id="ventanilla">
-                <option value="1">1</option>
-                <option value="2">2</option>
-            </select>
-        </div>
-        <div class="grid lg:grid-cols-2 gap-8">
-            <div class="bg-white w-full shadow-lg mx-auto rounded-3xl p-8 flex flex-col justify-center gap-6">
-                <button id="next"
-                    class="bg-gradient-to-br from-green-400 to-cyan-400 text-white text-xl font-bold py-4 px-4 uppercase rounded-2xl ring-green-500 hover:from-white hover:text-green-500 hover:shadow-lg hover:ring-2 focus:scale-95 duration-500">
-                    Siguiente
-                </button>
-                <button id="recall"
-                    class="bg-gradient-to-br from-green-400 to-cyan-400 text-white text-xl font-bold py-4 px-4 uppercase rounded-2xl ring-amber-500 hover:from-white hover:text-amber-500 hover:shadow-lg hover:ring-2 focus:scale-95 duration-500">
-                    Volver a llamar
-                </button>
-                <hr class="mx-auto rounded-3xl border-2 w-2/3">
-                <div class="flex flex-col justify-center gap-6">
-                    <h3 class="text-center text-sm lg:text-xl text-slate-400 italic">
-                        👇 Enviar un mensaje a la pantalla 👇
+    <body class="bg-slate-50">
+        <div class="container mx-auto flex flex-col justify-center mt-8 gap-8">
+            <div
+                class="text-center text-5xl pb-2 font-bold uppercase flex gap-4 items-center justify-center"
+            >
+                <h2 class="hover:text-green-500 duration-300">
+                    Ventanilla de atencion
+                </h2>
+                <select
+                    class="rounded-md p-4"
+                    name="ventanilla"
+                    id="ventanilla"
+                >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div
+                    class="bg-white w-full shadow-lg mx-auto rounded-3xl p-8 flex flex-col justify-center gap-6"
+                >
+                    <button
+                        id="next"
+                        class="bg-gradient-to-br from-green-400 to-cyan-400 text-white text-xl font-bold py-4 px-4 uppercase rounded-2xl ring-green-500 hover:from-white hover:text-green-500 hover:shadow-lg hover:ring-2 focus:scale-95 duration-500"
+                    >
+                        Siguiente
+                    </button>
+                    <button
+                        id="recall"
+                        class="bg-gradient-to-br from-green-400 to-cyan-400 text-white text-xl font-bold py-4 px-4 uppercase rounded-2xl ring-amber-500 hover:from-white hover:text-amber-500 hover:shadow-lg hover:ring-2 focus:scale-95 duration-500"
+                    >
+                        Volver a llamar
+                    </button>
+                    <hr class="mx-auto rounded-3xl border-2 w-2/3" />
+                    <div class="flex flex-col justify-center gap-6">
+                        <h3
+                            class="text-center text-sm lg:text-xl text-slate-400 italic"
+                        >
+                            👇 Enviar un mensaje a la pantalla 👇
+                        </h3>
+                        <textarea
+                            id="msg"
+                            class="px-4 py-2 text-xl text-slate-500 rounded-2xl bg-slate-100 border-2 focus:border-green-400 focus:outline-0 focus:shadow-xl duration-500"
+                            type="text"
+                            name="msg"
+                            id="msg"
+                            rows="8"
+                        ></textarea>
+                        <button
+                            id="send"
+                            class="bg-gradient-to-br from-green-400 to-cyan-400 text-white text-xl font-bold py-4 px-4 uppercase rounded-2xl ring-slate-500 hover:from-white hover:text-slate-500 hover:shadow-lg hover:ring-2 focus:scale-95 duration-500"
+                        >
+                            Enviar
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="bg-slate-800 flex flex-col w-full shadow-lg mx-auto rounded-3xl p-8 gap-8"
+                >
+                    <h3
+                        class="text-5xl text-slate-50 uppercase text-center p-1"
+                    >
+                        Ultima persona llamada
                     </h3>
-                    <textarea id="msg"
-                        class="px-4 py-2 text-xl text-slate-500 rounded-2xl bg-slate-100 border-2 focus:border-green-400 focus:outline-0 focus:shadow-xl duration-500"
-                        type="text" name="msg" id="msg" rows="8"></textarea>
-                    <button id="send"
-                        class="bg-gradient-to-br from-green-400 to-cyan-400 text-white text-xl font-bold py-4 px-4 uppercase rounded-2xl ring-slate-500 hover:from-white hover:text-slate-500 hover:shadow-lg hover:ring-2 focus:scale-95 duration-500">Enviar</button>
+                    <h2
+                        id="lastCall"
+                        class="text-5xl lg:text-7xl text-red-700 text-center p-8"
+                    ></h2>
+                    <hr class="w-2/3 rounded-3xl border-2 mx-auto" />
+                    <h3
+                        class="text-5xl text-slate-50 uppercase text-center p-1"
+                    >
+                        Ultimo mensaje enviado
+                    </h3>
+                    <h2
+                        id="lastMsg"
+                        class="rounded-3xl italic font-light bg-slate-50 text-3xl text-slate-700 text-center p-8"
+                    ></h2>
                 </div>
             </div>
-            <div class="bg-slate-800 flex flex-col w-full shadow-lg mx-auto rounded-3xl p-8 gap-8">
-                <h3 class="text-5xl text-slate-50 uppercase text-center p-1">
-                    Ultima persona llamada
-                </h3>
-                <h2 id="lastCall" class="text-5xl lg:text-7xl text-red-700 text-center p-8">
-                </h2>
-                <hr class="w-2/3 rounded-3xl border-2 mx-auto">
-                <h3 class="text-5xl text-slate-50 uppercase text-center p-1">
-                    Ultimo mensaje enviado
-                </h3>
-                <h2 id="lastMsg"
-                    class="rounded-3xl italic font-light bg-slate-50 text-3xl text-slate-700 text-center p-8">
-                </h2>
-            </div>
+            <button
+                class="p-4 text-white text-xl font-bold uppercase bg-gradient-to-br from-red-500 to-red-300 rounded-2xl ring-red-500 hover:ring-2 hover:from-white hover:text-red-500 focus:scale-95 duration-500"
+                type="submit"
+                id="logout"
+            >
+                Logout
+            </button>
         </div>
-        <button class="p-4 text-white text-xl font-bold uppercase bg-gradient-to-br from-red-500 to-red-300 rounded-2xl ring-red-500 hover:ring-2 hover:from-white hover:text-red-500 focus:scale-95 duration-500" type="submit" id="logout">Logout</button>
-    </div>
-    <div>
-    </div>
-    <div id="SocketFromLineUp"></div>
+        <div></div>
+        <div id="SocketFromLineUp"></div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        const socket = io();
-        socket.on('ventanilla', (data) => {
-            document.getElementById('lastCall').innerHTML = data
-        });
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            const socket = io();
+            socket.on("ventanilla", (data) => {
+                document.getElementById("lastCall").innerHTML = data;
+            });
 
-        socket.on('queue', (data) => {
-            fetch('http://192.168.5.53:3000/api/queues/countIsWaiting',
-                {
-                    method: 'GET',
+            socket.on("msg", (msg) => {
+                document.getElementById("lastMsg").innerHTML = msg;
+            });
+
+            socket.on("queue", (data) => {
+                fetch("http://192.168.5.53:3000/api/queues/countIsWaiting", {
+                    method: "GET",
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        "Content-Type": "application/json",
+                    },
                 })
-                .then((res) => { return res.json() })
-                .then((data) => {
-                    document.getElementById('totalQueues').innerHTML = data + 1
-
-                });
-            const modal = document.createElement('div');
-            modal.classList.add('text-lg', 'fixed', 'bottom-6', 'right-6', 'bg-slate-200', 'max-w-xs', 'rounded-lg', 'p-6', 'shadow-xl');
-            modal.innerHTML = `
+                    .then((res) => {
+                        return res.json();
+                    })
+                    .then((data) => {
+                        document.getElementById("totalQueues").innerHTML =
+                            data + 1;
+                    });
+                const modal = document.createElement("div");
+                modal.classList.add(
+                    "text-lg",
+                    "fixed",
+                    "bottom-6",
+                    "right-6",
+                    "bg-slate-200",
+                    "max-w-xs",
+                    "rounded-lg",
+                    "p-6",
+                    "shadow-xl"
+                );
+                modal.innerHTML = `
                 <span>Ha ingresado un nuevo cliente</span>
                 <span>🎉 en total hay <strong class="text-green-700" id="totalQueues"></strong> clientes en espera 🎉</span>
             `;
-            document.getElementById('SocketFromLineUp').appendChild(modal);
-            setTimeout(() => {
-                modal.remove();
-            }, 4000);
-        })
-    </script>
-    <script>
-
+                document.getElementById("SocketFromLineUp").appendChild(modal);
+                setTimeout(() => {
+                    modal.remove();
+                }, 4000);
+            });
+        </script>
+        <script>
             (() => {
                 fetch("http://192.168.5.53:3000/api/messages/last")
-                    .then((res) => { return res.json() })
+                    .then((res) => {
+                        return res.json();
+                    })
                     .then((data) => {
                         const message = data[0].message;
-                        document.getElementById('lastMsg').innerHTML = message;
+                        document.getElementById("lastMsg").innerHTML = message;
                     });
             })();
 
-        (() => {
-            fetch('http://192.168.5.53:3000/api/queues/last')
-                .then((res) => { return res.json() })
-                .then((data) => {
-                    const lastCall = data[0].idup
-                    document.getElementById('lastCall').innerHTML = lastCall
-                });
-        }
-        )();
-    </script>
-    <script>
-
-        document.querySelectorAll('button')
-            .forEach(btn => btn.addEventListener('click', () => {
-                let msg = document.getElementById('msg').value;
-                const ventanilla = document.getElementById('ventanilla').value;
-                msg == '' ? msg = 'Mensaje vacío' : msg;
-                if (btn.id === 'send') {
-                    sendMsg()
-                    socket.emit('ventanilla', msg)
-                    socket.emit('msg', msg)
-                }
-                else {
-                    socket.emit('ventanilla', [btn.id, ventanilla])
-                }
-            }))
-
-
-        const sendMsg = () => {
-            let message = document.getElementById('msg').value
-            fetch("http://192.168.5.53:3000/api/messages", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message })
-            })
-                .then((res) => { return res.json() })
-                .then((data) => {
-                    alert('Mensaje enviado')
-                    document.getElementById('msg').value = ''
-                    document.getElementById('send').disabled = true
-                    setTimeout(() => {
-                        document.getElementById('send').disabled = false
-                    }, 5000)
-                    document.getElementById('lastMsg').innerHTML = message
+            (() => {
+                fetch("http://192.168.5.53:3000/api/queues/last")
+                    .then((res) => {
+                        return res.json();
+                    })
+                    .then((data) => {
+                        const lastCall = data[0].idup;
+                        document.getElementById("lastCall").innerHTML =
+                            lastCall;
+                    });
+            })();
+        </script>
+        <script>
+            document.querySelectorAll("button").forEach((btn) =>
+                btn.addEventListener("click", () => {
+                    let msg = document.getElementById("msg").value;
+                    const ventanilla =
+                        document.getElementById("ventanilla").value;
+                    msg == "" ? (msg = "Mensaje vacío") : msg;
+                    if (btn.id === "send") {
+                        sendMsg();
+                        socket.emit("ventanilla", msg);
+                        socket.emit("msg", msg);
+                    } else {
+                        socket.emit("ventanilla", [btn.id, ventanilla]);
+                    }
                 })
-        }
+            );
 
-        // logout button send a get request to the server
-        document.getElementById('logout').addEventListener('click', () => {
-            fetch('http://192.168.5.53:3000/logout', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(res => res.redirected ? window.location.href = res.url : res.json())
-        })
-    </script>
-</body>
+            const sendMsg = () => {
+                let message = document.getElementById("msg").value;
+                fetch("http://192.168.5.53:3000/api/messages", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ message }),
+                })
+                    .then((res) => {
+                        return res.json();
+                    })
+                    .then((data) => {
+                        alert("Mensaje enviado");
+                        document.getElementById("msg").value = "";
+                        document.getElementById("send").disabled = true;
+                        setTimeout(() => {
+                            document.getElementById("send").disabled = false;
+                        }, 5000);
+                        document.getElementById("lastMsg").innerHTML = message;
+                    });
+            };
 
+            // logout button send a get request to the server
+            document.getElementById("logout").addEventListener("click", () => {
+                fetch("http://192.168.5.53:3000/logout", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }).then((res) =>
+                    res.redirected
+                        ? (window.location.href = res.url)
+                        : res.json()
+                );
+            });
+        </script>
+    </body>
 </html>
-
 
 <style>
     textarea {
