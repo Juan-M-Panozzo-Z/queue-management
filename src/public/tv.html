@@ -10,7 +10,7 @@
 <body class="bg-slate-900">
     <div class="mx-auto">
         <div class="grid lg:grid-cols-2 xl:gap-4 xl:p-4">
-            <div class="">
+            <div>
                 <video src="video/lorem2.mp4" class="hidden lg:flex rounded-3xl" autoplay muted loop />
             </div>
             <div>
@@ -72,6 +72,9 @@
         const messages = document.getElementById('tbody');
 
         socket.on('tv', (res) => {
+            // emit sound from /public/sound
+            const audio = new Audio('/sounds/hangouts_message.ogg');
+            audio.play();
             const item = document.createElement('tr');
             const childItem = document.createElement('td');
             const childItem2 = document.createElement('td');

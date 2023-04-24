@@ -130,6 +130,7 @@ io.on("connection", (socket) => {
 // Static files
 app.use("/css", express.static(path.join(__dirname, "public/css")));
 app.use("/video", express.static(path.join(__dirname, "public/video")));
+app.use("/sounds", express.static(path.join(__dirname, "public/sounds")));
 
 // Swagger
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
