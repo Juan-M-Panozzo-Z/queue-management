@@ -22,7 +22,6 @@ export const register = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-  console.log(`login: ${req.body.username} ${req.body.password}`);
   const { username, password } = req.body;
   const user = await Users.findOne({ username })
     .then((user) => {
@@ -30,13 +29,11 @@ export const login = async (req, res) => {
         if (result) {
           req.session.user = user;
           res.redirect("/ventanilla");
-        } else {
-          res.status(401).json({ message: "Usuario o contraseña incorrectos" });
         }
       });
     })
     .catch((err) => {
-      res.status(500).json({ message: err });
+      res.status(401).json('Usuario o contraseña incorrectos')
     });
 };
 
