@@ -36,7 +36,8 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         (() => {
-            fetch('http://192.168.5.53:3000/api/messages/last')
+            const domain = window.location.hostname;
+            fetch(`http://${domain}:3000/api/messages/last'`)
                 .then(res => res.json())
                 .then((data) => {
                     const msg = data[0].message

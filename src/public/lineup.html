@@ -64,7 +64,8 @@
 
     const lineUp = () => {
         socket.emit('queue', idup.value)
-        fetch(`http://192.168.5.53:3000/api/queues/`, {
+        const domain = 
+        fetch(`http://${domain}:3000/api/queues/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
