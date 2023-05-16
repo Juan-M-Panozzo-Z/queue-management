@@ -35,7 +35,7 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        (() => {z
+        (() => {
             fetch('/api/messages/last')
                 .then(res => res.json())
                 .then((data) => {
@@ -72,7 +72,6 @@
         const messages = document.getElementById('tbody');
 
         socket.on('tv', (res) => {
-            // emit sound from /public/sound
             const audio = new Audio('/sounds/hangouts_message.ogg');
             audio.play();
             const item = document.createElement('tr');
