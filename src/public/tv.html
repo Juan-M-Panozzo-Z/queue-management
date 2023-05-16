@@ -1,101 +1,125 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" href="css/style.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>TV</title>
+    </head>
 
-<head>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>TV</title>
-</head>
-
-<body class="bg-slate-900">
-    <div class="mx-auto">
-        <div class="grid lg:grid-cols-2 xl:gap-4 xl:p-4">
-            <div>
-                <video src="video/lorem2.mp4" class="hidden lg:flex rounded-3xl" autoplay muted loop />
-            </div>
-            <div>
-                <table id="table" class="table-auto w-full bg-slate-700 xl:rounded-3xl">
-                    <thead class="text-slate-50 text-center text-xl xl:text-4xl bold">
-                        <tr class="text-center">
-                            <th>
-                                DNI
-                            </th>
-                            <th>
-                                Ventanilla
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbody"></tbody>
-                </table>
+    <body class="bg-slate-900">
+        <div class="mx-auto">
+            <div class="grid lg:grid-cols-2 xl:gap-4 xl:p-4">
+                <div>
+                    <video
+                        src="video/lorem2.mp4"
+                        class="hidden lg:flex rounded-3xl"
+                        autoplay
+                        muted
+                        loop
+                    />
+                </div>
+                <div>
+                    <table
+                        id="table"
+                        class="table-auto w-full bg-slate-700 xl:rounded-3xl"
+                    >
+                        <thead
+                            class="text-slate-50 text-center text-xl xl:text-4xl bold"
+                        >
+                            <tr class="text-center">
+                                <th>DNI</th>
+                                <th>Ventanilla</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <marquee direction="left" loop="infinite"
-        class="bg-slate-400 absolute bottom-0 text-4xl xl:text-8xl text-slate-50 py-4 uppercase xl:rounded-3xl"></marquee>
+        <marquee
+            direction="left"
+            loop="infinite"
+            class="bg-slate-400 absolute bottom-0 text-4xl xl:text-8xl text-slate-50 py-4 uppercase xl:rounded-3xl"
+        ></marquee>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        (() => {
-            fetch('/api/messages/last')
-                .then(res => res.json())
-                .then((data) => {
-                    const msg = data[0].message
-                    const marquee = document.querySelector('marquee');
-                    marquee.innerHTML = msg;
-                })
-        })();
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            (() => {
+                fetch("/api/messages/last")
+                    .then((res) => res.json())
+                    .then((data) => {
+                        const msg = data[0].message;
+                        const marquee = document.querySelector("marquee");
+                        marquee.innerHTML = msg;
+                    });
+            })();
 
-        const eraseRows = () => {
-            console.log('dentro de la funcion')
-            const table = document.getElementById('table');
-            const cantRows = table.rows.length;
-            if (cantRows >= 5) {
-                table.deleteRow(6);
-            }
-        }
+            const eraseRows = () => {
+                console.log("dentro de la funcion");
+                const table = document.getElementById("table");
+                const cantRows = table.rows.length;
+                if (cantRows >= 5) {
+                    table.deleteRow(6);
+                }
+            };
 
-        const firstLineRed = () => {
-            const table = document.getElementById('table');
-            const firstLine = table.rows[1];
-            firstLine.classList.add('text-red-500', 'border-4', 'border-red-500');
+            const firstLineRed = () => {
+                const table = document.getElementById("table");
+                const firstLine = table.rows[1];
+                firstLine.classList.add(
+                    "text-red-500",
+                    "border-4",
+                    "border-red-500"
+                );
 
-            // line 2 to 5 to text-slate-50
-            for (let i = 2; i <= 5; i++) {
-                const line = table.rows[i];
-                line.classList.remove('text-red-500', 'border-4', 'border-red-500');
-                line.classList.add('text-slate-50');
-            }
+                // line 2 to 5 to text-slate-50
+                for (let i = 2; i <= 5; i++) {
+                    const line = table.rows[i];
+                    line.classList.remove(
+                        "text-red-500",
+                        "border-4",
+                        "border-red-500"
+                    );
+                    line.classList.add("text-slate-50");
+                }
+            };
 
-        }
+            const socket = io();
+            const messages = document.getElementById("tbody");
 
-        const socket = io();
-        const messages = document.getElementById('tbody');
+            socket.on("tv", (res) => {
+                const audio = new Audio("/sounds/hangouts_message.ogg");
+                audio.play();
+                const item = document.createElement("tr");
+                const childItem = document.createElement("td");
+                const childItem2 = document.createElement("td");
+                childItem.classList.add(
+                    "dni",
+                    "text-center",
+                    "text-4xl",
+                    "xl:text-9xl"
+                );
+                childItem2.classList.add(
+                    "ventanilla",
+                    "text-center",
+                    "text-4xl",
+                    "xl:text-9xl"
+                );
+                childItem.innerHTML = `****${res[0].toString().slice(-4)}`;
+                childItem2.innerHTML = res[1];
+                item.appendChild(childItem);
+                item.appendChild(childItem2);
 
-        socket.on('tv', (res) => {
-            const audio = new Audio('/sounds/hangouts_message.ogg');
-            audio.play();
-            const item = document.createElement('tr');
-            const childItem = document.createElement('td');
-            const childItem2 = document.createElement('td');
-            childItem.classList.add('dni', 'text-center', 'text-4xl', 'xl:text-9xl');
-            childItem2.classList.add('ventanilla', 'text-center', 'text-4xl', 'xl:text-9xl');
-            childItem.innerHTML = res[0];
-            childItem2.innerHTML = res[1];
-            item.appendChild(childItem);
-            item.appendChild(childItem2)
+                messages.insertBefore(item, messages.firstChild);
+                firstLineRed();
+                eraseRows();
+                window.scrollTo(0, document.body.scrollHeight);
+            });
 
-            messages.insertBefore(item, messages.firstChild);
-            firstLineRed();
-            eraseRows();
-            window.scrollTo(0, document.body.scrollHeight);
-        });
-
-        socket.on('msg', (msg) => {
-            const marquee = document.querySelector('marquee');
-            marquee.innerHTML = msg;
-        })
-
-    </script>
-</body>
-
+            socket.on("msg", (msg) => {
+                const marquee = document.querySelector("marquee");
+                marquee.innerHTML = msg;
+            });
+        </script>
+    </body>
 </html>
