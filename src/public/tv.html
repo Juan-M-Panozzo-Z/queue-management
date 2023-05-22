@@ -44,6 +44,15 @@
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
+            const textToSpeech = (dni = 6299, ventanilla = 1) => {
+                const msg = new SpeechSynthesisUtterance();
+                msg.text = `DNI terminado en ${dni} a la ventanilla ${ventanilla}`;
+                msg.lang = "es-MX";
+                msg.volume = 1;
+                speechSynthesis.speak(msg);
+            };
+        </script>
+        <script>
             (() => {
                 fetch("/api/messages/last")
                     .then((res) => res.json())
@@ -109,7 +118,10 @@
                 childItem2.innerHTML = res[1];
                 item.appendChild(childItem);
                 item.appendChild(childItem2);
-
+                // textToSpeech settimeout 500
+                setTimeout(() => {
+                    textToSpeech(childItem.innerHTML.slice(-4), childItem2.innerHTML);
+                }, 1000);
                 messages.insertBefore(item, messages.firstChild);
                 firstLineRed();
                 eraseRows();
@@ -121,5 +133,6 @@
                 marquee.innerHTML = msg;
             });
         </script>
+        
     </body>
 </html>
