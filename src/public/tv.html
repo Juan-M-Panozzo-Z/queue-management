@@ -42,6 +42,20 @@
             class="bg-slate-400 absolute bottom-0 text-4xl xl:text-8xl text-slate-50 py-4 uppercase xl:rounded-3xl"
         ></marquee>
 
+        <!-- modal -->
+        <div
+            id="modal"
+            class="flex flex-col justify-around absolute inset-1/4 w-1/2 h-1/2 bg-white rounded-3xl p-8 bg-opacity-95 hidden"
+        >
+            <p class="text-xl md:text-5xl text-center text-red-500 font-semibold">
+                Mensaje enviado desde Consultorios externos
+            </p>
+            <p
+                class="mt-8 text-2xl md:text-6xl text-center text-slate-700"
+                id="msg"
+            >Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, distinctio?</p>
+        </div>
+
         <script src="/socket.io/socket.io.js"></script>
         <script>
             const textToSpeech = (dni = 6299, ventanilla = 1) => {
@@ -97,7 +111,7 @@
             const messages = document.getElementById("tbody");
 
             socket.on("tv", (res) => {
-                const audio = new Audio("/sounds/notification.mp3");
+                const audio = new Audio("/sounds/msg.ogg");
                 audio.play();
                 const item = document.createElement("tr");
                 const childItem = document.createElement("td");
@@ -120,7 +134,10 @@
                 item.appendChild(childItem2);
                 // textToSpeech settimeout 500
                 setTimeout(() => {
-                    textToSpeech(childItem.innerHTML.slice(-4), childItem2.innerHTML);
+                    textToSpeech(
+                        childItem.innerHTML.slice(-4),
+                        childItem2.innerHTML
+                    );
                 }, 1200);
                 messages.insertBefore(item, messages.firstChild);
                 firstLineRed();
@@ -130,9 +147,17 @@
 
             socket.on("msg", (msg) => {
                 const marquee = document.querySelector("marquee");
+                const modal = document.getElementById("modal");
                 marquee.innerHTML = msg;
+                const audio = new Audio("/sounds/notification.mp3");
+                audio.play();
+                modal.classList.remove("hidden");
+                const msgModal = document.getElementById("msg");
+                msgModal.innerHTML = msg;
+                setTimeout(() => {
+                    modal.classList.add("hidden");
+                }, 7000);
             });
         </script>
-        
     </body>
 </html>
